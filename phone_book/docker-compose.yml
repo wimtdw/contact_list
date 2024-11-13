@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    ports:
+    - "5432:5432"
+    volumes:
+    # - ./init-scripts:/docker-entrypoint-initdb.d/
+    - postgres_data:/var/lib/postgresql/data
+    # command: bash -c "psql -U postgres -d contacts -c \"CREATE TABLE users (id SERIAL PRIMARY KEY, username VARCHAR(100) NOT NULL, email VARCHAR(100), mobile VARCHAR(100) NOT NULL); \" && psql -U postgres -d contacts -c \"INSERT INTO users (username, email, mobile) VALUES ('John Doe', 'john.doe@example.com', '+1234567890');\""
+  web:
+    build: .
+    # command: 
+    # python manage.py makemigrations
+    # python manage.py migrate
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    # volumes:
+    #   - db_data:/var/lib/postgresql/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      
+volumes:
+ postgres_data:

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>All contacts</h1>
+  {% comment %} <ul class="py-0"> {% endcomment %}
+    {% for object in objects %}
+      {% comment %} <li> {% endcomment %}
+        <h3>Id: {{ object.id }}. {{ object.username }}</h3> 
+        {% comment %} <p>Id: </p> {% endcomment %}
+        <p>Email: {{ object.email }}</p>
+        <p>Phone number: {{ object.mobile }}</p>  
+      {% comment %} </li> {% endcomment %}
+    {% endfor %}
+  {% comment %} </ul> {% endcomment %}
+{% endblock %}
