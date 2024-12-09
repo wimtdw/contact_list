@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 # Create your views here.
 from django.shortcuts import render
 from django.http import Http404
+
+from contact.forms import UserForm
 from .models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
@@ -61,35 +63,41 @@ def contact_detail(request, user_id):
         template = 'contact_detail.html'
         return render(request, template, context)
 
-    elif request.method == 'DELETE':
+    if request.method == 'POST':
         message =''
-        try:
-            entry = User.objects.get(id=user_id) 
-        except User.DoesNotExist:
-            message = 'Contact with this id doesn\'t exist'
-        else:
-            entry.delete()
-            message='Entry with ID '+ str(user_id) + ' deleted successfully'
+        if 'action' in request.POST:
+            action = request.POST['action']
+            if action == 'delete':
+                try:
+                    entry = User.objects.get(id=user_id) 
+                except User.DoesNotExist:
+                    message = 'Contact with this id doesn\'t exist'
+                else:
+                    entry.delete()
+                    message='Entry with ID '+ str(user_id) + ' deleted successfully'
         context = {'message': message}
         template = 'result.html'
         return render(request, template, context)
+
     
-    if request.method == 'PUT':
-        try:
-            entry = User.objects.get(id=user_id) 
-        except User.DoesNotExist:
-            message = 'Contact with this id doesn\'t exist'
-            context = {'message': message}
-            template = 'result.html'
-            return render(request, template, context)
-            # contact = get_object_or_404(User, id=user_id)
-        data = json.loads(request.body.decode('utf-8'))
-        entry.username = data.get('username', entry.username)
-        entry.email = data.get('email', entry.email)
-        entry.mobile = data.get('mobile', entry.mobile)
-        entry.save()
-        context = {'contact': entry}
-        template = 'contact_detail.html'
+    
+    
+@csrf_exempt
+def user_update(request, user_id):
+    try:
+        user = User.objects.get(id=user_id) 
+        if request.method == 'POST':
+            form = UserForm(request.POST, instance=user)  # Создаем форму с данными из POST запроса
+            if form.is_valid():
+                form.save()
+                return redirect('contact:contact_detail', user.id)
+        else:
+            form = UserForm(instance=user)
+    except User.DoesNotExist:
+        message = 'Contact with this id doesn\'t exist'
+        context = {'message': message}
+        template = 'result.html'
         return render(request, template, context)
-    
-    
+    context = {'contact': user, 'form': form}
+    template = 'update.html'
+    return render(request, template, context)

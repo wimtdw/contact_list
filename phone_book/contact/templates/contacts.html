@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>All contacts</h1>
-  {% comment %} <ul class="py-0"> {% endcomment %}
-    {% for object in objects %}
-      {% comment %} <li> {% endcomment %}
-        <h3>Id: {{ object.id }}. {{ object.username }}</h3> 
-        {% comment %} <p>Id: </p> {% endcomment %}
-        <p>Email: {{ object.email }}</p>
-        <p>Phone number: {{ object.mobile }}</p>  
-      {% comment %} </li> {% endcomment %}
+<div class="container my-4">
+  <div class="row justify-content-center">  
+  {% comment %} <h1>All Contacts</h1> {% endcomment %}
+  {% comment %} <div class="row"> {% endcomment %}
+    {% for entry in objects %}
+      <div class="col-md-7 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{% url 'contact:contact_detail' entry.id %}">Id: {{ entry.id }}. {{ entry.username }}</a></h5>
+            <p class="card-text">Email: {{ entry.email }}</p>
+            <p class="card-text">Phone number: {{ entry.mobile }}</p>
+          </div>
+        </div>
+      </div>
     {% endfor %}
-  {% comment %} </ul> {% endcomment %}
+  </div>
+</div>
 {% endblock %}

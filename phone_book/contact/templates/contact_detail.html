@@ -1,9 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
 {% block content %}
-  <h1>Contact</h1>
-        <h3>Id: {{ contact.id }}!</h3> 
-        <p>Username: {{ contact.username }}</p>
-        <p>Email: {{ contact.email }}</p>
-        <p>Phone number: {{ contact.mobile }}</p>  
+<div class="container my-4">
+  {% comment %} <h1>Контакт</h1> {% endcomment %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Id: {{ contact.id }}</h5>
+      <p class="card-text">Username: {{ contact.username }}</p>
+      <p class="card-text">Email: {{ contact.email }}</p>
+      <p class="card-text">Phone number: {{ contact.mobile }}</p>
+      <div class="row mx-0">
+      <a class="btn btn-primary mx-1" href="{% url 'contact:update' contact.id %}">Update</a>
+      <form method="post" action="{% url 'contact:contact_detail' contact.id %}" class=" mx-1">
+        {% csrf_token %} 
+        <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
