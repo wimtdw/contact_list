@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+{% block content %}
+<div class="row justify-content-center my-5">  
+  <div class="col-md-4 mb-3">
+    <div class="card">
+      <div class="card-body">
+        {% with request.resolver_match.view_name as view_name %}
+          {% if view_name  == 'contact:update' %}
+            <h3 class="card-title">Edit contact</h3>
+          {% elif view_name  == 'contact:create' %}
+            <h3 class="card-title">Create contact</h3>
+          {% endif %}
+        {% endwith %}
+        <form method="post">
+          {% csrf_token %}
+          {% bootstrap_form form  %}
+          {% bootstrap_button button_type="submit" content="Сохранить" %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

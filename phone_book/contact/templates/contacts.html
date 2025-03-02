@@ -3,19 +3,32 @@
 {% block content %}
 <div class="container my-4">
   <div class="row justify-content-center">  
-  {% comment %} <h1>All Contacts</h1> {% endcomment %}
-  {% comment %} <div class="row"> {% endcomment %}
+    <div class="col-md-7 mb-3">
+      <div class="list-group list-group-horizontal">
+        <div class="d-inline">
+          <a class="btn btn-primary" href="{% url 'contact:create' %}">Add contact</a>
+        </div>
+        <div class="d-inline mx-3">
+          {% if objects %}
+            <form method="post" class="">
+              {% csrf_token %} 
+              <button type="submit" name="action" value="delete" class="btn btn-danger">Delete all contacts</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
     {% for entry in objects %}
       <div class="col-md-7 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title"><a href="{% url 'contact:contact_detail' entry.id %}">Id: {{ entry.id }}. {{ entry.username }}</a></h5>
+            <h5 class="card-title"><a href="{% url 'contact:contact_detail' entry.id %}">{{ entry.username }}</a></h5>
             <p class="card-text">Email: {{ entry.email }}</p>
             <p class="card-text">Phone number: {{ entry.mobile }}</p>
           </div>
         </div>
       </div>
-    {% endfor %}
+    {% endfor %}  
   </div>
 </div>
 {% endblock %}

@@ -2,20 +2,27 @@
 
 {% block content %}
 <div class="container my-4">
-  {% comment %} <h1>Контакт</h1> {% endcomment %}
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Id: {{ contact.id }}</h5>
-      <p class="card-text">Username: {{ contact.username }}</p>
-      <p class="card-text">Email: {{ contact.email }}</p>
-      <p class="card-text">Phone number: {{ contact.mobile }}</p>
-      <div class="row mx-0">
-      <a class="btn btn-primary mx-1" href="{% url 'contact:update' contact.id %}">Update</a>
-      <form method="post" action="{% url 'contact:contact_detail' contact.id %}" class=" mx-1">
-        {% csrf_token %} 
-        <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
-      </form>
-    </div>
+  <div class="row justify-content-center my-5 ">  
+    <div class="card col-md-4 mb-3">
+      <div class="card-body">
+        <p class="card-text">Username: {{ contact.username }}</p>
+        <p class="card-text">Email: {{ contact.email }}</p>
+        <p class="card-text">Phone number: {{ contact.mobile }}</p>
+        <div class="list-group list-group-horizontal">
+          <span class="d-inline">
+            <a class="btn btn-primary" href="{% url 'contact:update' contact.id %}">Edit</a>
+          </span>
+          <span class="d-inline mx-1">
+            <form method="post" action="{% url 'contact:contact_detail' contact.id %}" class=" mx-1">
+              {% csrf_token %} 
+              <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
+            </form>
+          </span>
+        </div>
+      </div>
+      <div class="mx-3 mb-4">
+        <a class="" href="{% url 'contact:manage_contacts' %}">To contact list</a>
+      </div>  
     </div>
   </div>
 </div>
